@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Results</title>
+    <div th:insert="base :: head"></div>
+</head>
+<body>
+<br>
+<div class="container">
+    <div class="jumbotron">
+        <a href="/">Show All Flights</a>
+        <br>
+        <h2>Search Results</h2>
+        <table>
+            <tr>
+                <th>Date &nbsp;&nbsp;&nbsp;</th>
+                <th>Departure Airport &nbsp;&nbsp;&nbsp;</th>
+                <th>Arrival Airport &nbsp;&nbsp;&nbsp;</th>
+                <th>Airline &nbsp;&nbsp;&nbsp;</th>
+                <th>Price &nbsp;&nbsp;&nbsp;</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="flight : ${flights}">
+                <td th:text="${#dates.format(flight.date, 'dd-MMM-yyyy')}"></td>
+                <td th:text=" ${flight.departureLoc}  "> </td>
+                <td th:text=" ${flight.arrivalLoc}  "> </td>
+                <td th:text=" ${flight.airline}  "> </td>
+                <td th:text=" ${flight.price}  "> </td>
+                <td>
+                    <a th:href="@{/detail/{id}(id=${flight.id})}">Details</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div th:insert="base :: bootstrapScripts"></div>
+</body>
+</html>

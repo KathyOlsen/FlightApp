@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Flight Form</title>
+    <div th:insert="base :: head"></div>
+</head>
+<body>
+<br>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Flight Form</h1>
+        <form action="#" th:action="@{/processflight}" th:object="${flight}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{date}" />
+            Date: <input type="date" name="date" />
+            <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+            <br>
+            Departure Airport: <input type="text" th:field="*{departureLoc}" />
+            <span th:if="${#fields.hasErrors('departureLoc')}" th:errors="*{departureLoc}"></span>
+            <br>
+            Arrival Airport: <input type="text" th:field="*{arrivalLoc}" />
+            <span th:if="${#fields.hasErrors('arrivalLoc')}" th:errors="*{arrivalLoc}"></span>
+            <br>
+            Airline: <input type="text" th:field="*{airline}" />
+            <span th:if="${#fields.hasErrors('airline')}" th:errors="*{airline}"></span>
+            <br>
+            Price: <input type="text" th:field="*{price}" />
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <br>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+<div th:insert="base :: bootstrapScripts"></div>
+</body>
+</html>

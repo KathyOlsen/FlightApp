@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>List - All Flights</title>
+    <div th:insert="base :: head"></div>
+</head>
+<body>
+<br>
+<div class="container">
+    <div class="jumbotron">
+        <row>
+            <form th:action="@{/processsearch}" method="post">
+                <select name="SearchSelector">
+                    <option value="NONE">Search by...</option>
+                    <option value="DepartureLoc">Departure Airport</option>
+                    <option value="ArrivalLoc">Arrival Airport</option>
+                    <option value="Airline">Airline</option>
+                </select>
+                <input type="text"
+                       placeholder="Name of Airport/Airline"
+                       style="font-style: italic"
+                       name="search">
+                <button type="submit">Search</button>
+            </form>
+            <div class="row justify-content-end">
+                <button style="background-color: yellow"><a href="/add">Add a Flight</a></button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </row>
+        <br>
+        <h2>All Flights</h2>
+        <table>
+            <tr>
+                <th>Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Departure Airport &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Arrival Airport &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Airline &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="flight : ${flights}">
+                <td th:text="${#dates.format(flight.date, 'dd-MMM-yyyy')}"></td>
+                <td th:text="${flight.departureLoc}"> </td>
+                <td th:text="${flight.arrivalLoc}"> </td>
+                <td th:text="${flight.airline}"> </td>
+                <td th:text="${flight.price}"> </td>
+                <td>
+                    <a th:href="@{/update/{id}(id=${flight.id})}">Update</a> -
+                    <a th:href="@{/detail/{id}(id=${flight.id})}">Details</a> -
+                    <a th:href="@{/delete/{id}(id=${flight.id})}">Delete</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div th:insert="base :: bootstrapScripts"></div>
+</body>
+</html>
