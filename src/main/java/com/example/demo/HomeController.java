@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,7 +31,8 @@ public class HomeController {
     @PostMapping("/processflight")
     public String processForm(@Valid Flight flight,
                               BindingResult result,
-                              @RequestParam(name="date") String date){
+                              @RequestParam(name="date") String date,
+                              @RequestParam(name="price") String price){
         if(result.hasErrors()){
             return "flightform";
         }
@@ -44,20 +46,56 @@ public class HomeController {
         catch (java.text.ParseException e){
             e.printStackTrace();
         }
+        if (!price.startsWith("$")) {
+            price = "$" + price;
+            flight.setPrice(price);
+        }
         flightRepository.save(flight);
         return "redirect:/";
     }
 
     @PostMapping("/processsearch")
     public String processSearch(Model model,
-                                @RequestParam(name="SearchSelector") String optionvalue,
-                                @RequestParam(name="search") String search) {
-        if(optionvalue.equalsIgnoreCase("DepartureLoc")){
-            model.addAttribute("flights", flightRepository.findByDepartureLoc(search));
-        }else if(optionvalue.equalsIgnoreCase("ArrivalLoc")){
-            model.addAttribute("flights", flightRepository.findByArrivalLoc(search));
-        }else if(optionvalue.equalsIgnoreCase("Airline")){
-            model.addAttribute("flights", flightRepository.findByAirline(search));
+                                @RequestParam(name="SearchSelector") String option,
+                                @RequestParam(name="search") String search,
+                                @RequestParam(name="searchD") String searchD,
+                                @RequestParam(name="searchP") String searchP) {
+        if(option.equals("Date")){
+            String pattern = "yyyy-MM-dd";
+            System.out.println("searchD: " + searchD);
+            try {
+                String formattedDate = searchD;
+                System.out.println("formattedDate: " + formattedDate);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                Date realDate = simpleDateFormat.parse(formattedDate);
+                System.out.println("realDate: " + realDate);
+                if(option.equals("DepartureLoc")){
+                    if(option.equals("ArrivalLoc")){
+                        if(option.equals("Airline")){
+                            if(option.equals("Price")){
+
+                            }
+                        }
+                    }
+                    model.addAttribute("flights", flightRepository.findByDateAndDepartureLocContainingIgnoreCase(realDate,search));
+                }else if(option.equals("ArrivalLoc")){
+                    model.addAttribute("flights", flightRepository.findByDate(realDate));
+                }else{
+                    model.addAttribute("flights", flightRepository.findByDate(realDate));
+                }
+            }
+            catch (ParseException e){
+                e.printStackTrace();
+            }
+        }else if(option.equalsIgnoreCase("DepartureLoc")){
+            model.addAttribute("flights", flightRepository.findByDepartureLocContainingIgnoreCase(search));
+        }else if(option.equalsIgnoreCase("ArrivalLoc")){
+            model.addAttribute("flights", flightRepository.findByArrivalLocContainingIgnoreCase(search));
+        }else if(option.equalsIgnoreCase("Airline")){
+            model.addAttribute("flights", flightRepository.findByAirlineContainingIgnoreCase(search));
+        }else if(option.equalsIgnoreCase("Price")){
+            String searchPrice = "$" + searchP;
+            model.addAttribute("flights", flightRepository.findByPriceIsLessThanEqual(searchPrice));
         }
         return "listSearchResults";
     }

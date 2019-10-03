@@ -12,16 +12,29 @@
             <form th:action="@{/processsearch}" method="post">
                 <select name="SearchSelector">
                     <option value="NONE">Search by...</option>
+                    <option value="Date">Date</option>
                     <option value="DepartureLoc">Departure Airport</option>
                     <option value="ArrivalLoc">Arrival Airport</option>
                     <option value="Airline">Airline</option>
+                    <option value="Price">Price Under...</option>
                 </select>
+                <input type="date"
+                       name="searchD">
                 <input type="text"
-                       placeholder="Name of Airport/Airline"
-                       style="font-style: italic"
-                       name="search">
-                <button type="submit">Search</button>
+                       placeholder="Departure Airport.."
+                       name="searchDA">
+                <input type="text"
+                       placeholder="Arrival Airport.."
+                       name="searchAA">
+                <input type="text"
+                       placeholder="Airline.."
+                       name="searchA">
+                <input type="number" min="100"
+                       placeholder="Price under.."
+                       name="searchP">
+                <button type="submit">Submit Search</button>
             </form>
+            <br>
             <div class="row justify-content-end">
                 <button style="background-color: yellow"><a href="/add">Add a Flight</a></button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -34,7 +47,7 @@
                 <th>Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>Departure Airport &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>Arrival Airport &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                <th>Airline &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Airline &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>Price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>Actions</th>
             </tr>
